@@ -1,2 +1,2 @@
 # Code-example-Local
-# work from https://github.com/thombergs/code-examples
+# All credits belong to [thombergs](https://github.com/thombergs/code-examples/commits?author=thombergs)
