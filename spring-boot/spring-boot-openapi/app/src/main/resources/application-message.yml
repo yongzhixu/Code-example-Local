@@ -1,0 +1,68 @@
+# *******消息队列配置：如RabbitMQ Kafka 等 *******
+spring:
+  kafka:
+    # 指定kafka代理地址，brokers集群。
+    bootstrap-servers: ${KAFKA_SERVER:127.0.0.1:9092} # 指定 Kafka Broker 地址，可以设置多个，以逗号分隔
+    producer:
+      # 发送失败重试次数。 当为0时，produce不会重复retires重发，此时replicate节点完全成为leader节点，不会产生消息丢失。
+      retries: 2
+      acks: 1 # 0-不应答。1-leader 应答。all-所有 leader 和 follower 应答。
+      # 每次批量发送消息的数量 批处理条数：当多个记录被发送到同一个分区时，生产者会尝试将记录合并到更少的请求中。这有助于客户端和服务器的性能。
+      batch-size: 16384
+      linger-ms: 500
+      # 32MB的批处理缓冲区。
+      buffer-memory: 33554432
+      # 指定消息key和消息体的编解码方式。
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      #value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      compression-type: snappy
+      properties:
+#        enable.idempotence: true #幂等开启，没有这些配置的值，我们就不能保证幂等性。如果应用程序没有显式重写这些设置，
+#         则当启用幂等性时，生产者将设置acks=all，retry=Integer.MAX_value，以及 max.inflight.requests.per.connection=1
+        linger:
+          ms: 10000 # 当生产端积累的消息达到batch-size或接收到消息linger.ms后,生产者就会将消息提交给kafka linger.ms为0表示每接收到一条消息就提交给kafka,这时候batch-size其实就没用了
+        max:
+          block:
+            ms: 2000 # For send() this timeout bounds the total time waiting for both metadata fetch and buffer allocation. Default:	60000 (1 minute)
+    consumer:
+      # 消费者群组ID，发布-订阅模式，即如果一个生产者，多个消费者都要消费，那么需要定义自己的群组，同一群组内的消费者只有一个能消费到消息。
+      #group-id: #这里不用配置，代码KafkaListener已加
+      # 如何设置为自动提交（enable.auto.commit=true），这里设置自动提交周期; 提交过offset，latest和earliest没有区别，但是在没有提交offset情况下，用latest直接会导致无法读取旧数据
+      # latest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+      # earliest 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费
+      auto-offset-reset: earliest
+      # 如果为true，消费者的偏移量将在后台定期提交。true时consumer会周期性的把当前消费的offset值保存到zookeeper。当consumer失败重启之后将会使用此值作为新开始消费的值
+      enable-auto-commit: false
+      # 自动提交周期： 在enable.auto.commit 为true的情况下， 自动提交的间隔，默认值5000ms
+      auto-commit-interval: 100
+      # 一次从kafka中poll出来的数据条数 默认值为500 ；max.poll.records条数据需要在在session.timeout.ms这个时间内处理完
+      max-poll-records: 100
+      # 指定消息key和消息体的编解码方式。
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      #value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      # kafka拦截器
+      properties:
+        interceptor.classes: com.convertlab.kafkapipe.interceptor.KafkaConsumerInterceptor
+      # MANUAL-在处理完最后一次轮询的所有结果后，将队列排队，并在一次操作中提交偏移量（批量手动）。
+      # MANUAL_IMMEDIATE-只要在侦听器线程上执行确认，就立即提交偏移（同步或异步手动）。
+        max:
+          poll:
+            interval:
+              ms: 60000
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+    template:
+      test:
+        topic: topic-amos-test-topic
+        group-id: topic-amos-test-group
+    streams:
+      replication-factor: 20
+logging:
+  level:
+    org:
+      springframework:
+        kafka: ERROR # spring-kafka INFO 日志太多了，所以我们限制只打印 ERROR 级别
+      apache:
+        kafka: ERROR # kafka INFO 日志太多了，所以我们限制只打印 ERROR 级别

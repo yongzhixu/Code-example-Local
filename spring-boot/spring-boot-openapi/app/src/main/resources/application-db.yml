@@ -1,0 +1,63 @@
+# ******SQL、NOSQL数据源配置: 如mysql 、oracle、redis、mongoDB等 *******spring:
+
+## MySQL 数据源配置
+spring:
+  datasource:
+    #druid: # spring.datasource.druid.以下配置 和 spring.datasource.以下配置是一样的
+    #    db-type: com.alibaba.druid.pool.DruidDataSource
+    #    driver-class-name:
+    #    url:
+    #    username: root
+    #    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/cd_vanguard_cdp?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=true}
+    username: ${MYSQL_USR:root}
+    password: ${MYSQL_PWD:ConvertLab@Mysql}
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    #Spring Boot 默认是不注入这些属性值的，需要自己绑定
+    druid:
+      # druid com.convertlab.common.beta.config 初始化大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000 # 配置获取连接等待超时的时间
+      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位是毫秒
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true # 打开PSCache，并且指定每个连接上PSCache的大小
+      max-pool-prepared-statement-per-connection-size: 20
+      filter: # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，stat:监控统计、log4j：日志记录、wall：防御sql注入
+        commons-log: #如果允许时报错  java.lang.ClassNotFoundException: org.apache.log4j.Priority
+          #则导入 log4j 依赖即可，Maven 地址：https://mvnrepository.com/artifact/log4j/log4j
+          connection-logger-name: stat,wall,log4j
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 2000
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      use-global-data-source-stat: true  # 合并多个DruidDataSource的监控数据
+      stat-view-servlet:
+        enabled: false
+      web-stat-filter:
+        enabled: false
+
+  # redis 配置
+  redis:
+    database: 0
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    timeout: 100000
+    username: ${REDIS_USR:}
+    password: ${REDIS_PWD:root}
+    #jedis: # 改用lettuce
+    lettuce:
+      pool:
+        max-active: 4000
+        max-idle: 1000
+        max-wait: 30000
+        min-idle: 5
+        time-between-eviction-runs: 100000 #每ms运行一次空闲连接回收器（独立线程）

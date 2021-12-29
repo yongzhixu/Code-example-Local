@@ -41,7 +41,7 @@ class BatchApiControllerTest {
                 .param("tenantId", "tenantId")
                 .content(objectMapper.writeValueAsString(batchMessage))
                 .contentType("application/json"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
 
     }
 }

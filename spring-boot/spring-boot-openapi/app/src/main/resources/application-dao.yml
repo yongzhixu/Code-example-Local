@@ -1,0 +1,37 @@
+# ******持久层配置：如JPA、Mybatis等 *******
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none #生产环境要none,不做任何操作
+    show-sql: false # 下面加了logging.level.org.hibernate.SQL配置，会重复打印日志，所以这里为false
+
+## mybatis 数据源配置
+mybatis:
+  #  config-location: classpath:mapper/*Mapper.xml
+  type-aliases-package: io.reflectoring.entity
+  mapper-locations: classpath:mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+#指定映射xml文件位置
+#classpath对应resource，*.xml表示配置mapper下所有xml文件
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+  #  configuration:
+  #    #org.apache.ibatis.logging.stdout.StdOutImpl #控制台打印sql语句方便调试sql语句执行错误
+  #    #org.apache.ibatis.logging.log4j2.Log4j2Impl 这个不在控制台打印查询结果,但是在log4j中打印
+  #    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+  pageSize: ${PAGE_SIZE:2000}
+
+# 不添加 log4j2无法打印jpa的sql日志
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug   #debug时显示sql
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace  #trace时，显示参数
+              #BasicExtractor: trace  #trace时，查询出来的结果集提取

@@ -1,0 +1,11 @@
+# *******DmHub产品功能配置*******
+convertlab:
+  apiUrl: ${CONVERTLAB_API_URL:https://api.dmhub.cn/v2} # https://api.dmhub.cn/v2测试环境，生产https://api.convertlab.com/v2
+  crv:
+    appId: ${CRV_APP_ID:cl0358177ca3a8cc2}
+    appSecret: ${CRV_APP_SECRET:e3f0aef7960017d71a8b18288b6649a2824d860a}
+    tenantId: ${CRV_TENANT_ID:26}
+  ole:
+    appId: ${OLE_APP_ID:cl0138177ca3f3911}
+    appSecret: ${OLE_APP_SECRET:a2bfd21eb4fb55d614558a8a6ba39e2560ac6d38}
+    tenantId: ${OLE_TENANT_ID:565}

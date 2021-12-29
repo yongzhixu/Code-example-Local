@@ -4,3 +4,8 @@ server:
 request:
   logging:
     shouldLog: true
+spring:
+  application:
+    name: demoapi
+  profiles:
+    include: message, dmhub, dao, db, mybatis
