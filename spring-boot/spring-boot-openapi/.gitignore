@@ -29,3 +29,5 @@ build/
 /logs
 ### VS Code ###
 .vscode/
+
+.mvn/*
