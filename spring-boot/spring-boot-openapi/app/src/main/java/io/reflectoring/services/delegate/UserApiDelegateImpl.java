@@ -51,8 +51,8 @@ public class UserApiDelegateImpl implements UserApiDelegate {
 
         WebClientService webClientService = new WebClientService();
         Map<String, String> map = new HashMap<>();
-        map = webClientService.getForObject("http://localhost:8087/resource", Map.class);
-        log.error(JsonUtil.toJsonStringNonNull(map));
+//        map = webClientService.getForObject("http://localhost:8087/resource", Map.class);
+//        log.error(JsonUtil.toJsonStringNonNull(map));
         return ResponseEntity.ok(user);
     }
 

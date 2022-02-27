@@ -35,10 +35,12 @@
         <convertlab.rabbitmqpipe.version>0.0.1-SNAPSHOT</convertlab.rabbitmqpipe.version>
 
         <!--    ==========    database       =============-->
-        <spring-cloud.version>2020.0.0</spring-cloud.version>
         <starter-validation.version>2.6.2</starter-validation.version>
         <spring-cloud.version>2020.0.0</spring-cloud.version>
         <spring-boot.maven.plugin.version>2.6.2</spring-boot.maven.plugin.version>
+
+
+        <!--    ==========    spring       =============-->
         <maven.compiler.version>3.1</maven.compiler.version>
         <maven.compiler.release>8</maven.compiler.release>
 
