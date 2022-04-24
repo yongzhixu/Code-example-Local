@@ -21,6 +21,7 @@
         <module>app</module>
         <module>kafkapipe</module>
         <module>cache</module>
+        <module>elasticsearch</module>
     </modules>
 
 
@@ -38,6 +39,7 @@
         <starter-validation.version>2.6.2</starter-validation.version>
         <spring-cloud.version>2020.0.0</spring-cloud.version>
         <spring-boot.maven.plugin.version>2.6.2</spring-boot.maven.plugin.version>
+        <spring-data-elasticsearch.version>4.3.1</spring-data-elasticsearch.version>
 
 
         <!--    ==========    spring       =============-->

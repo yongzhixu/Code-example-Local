@@ -6,35 +6,81 @@ info:
     email: young.xu@convertlab.com
   version: v1
 externalDocs:
-  description: Find out more about Reflectoring
+  description: Find out more about Convertlab
   url: https://www.convertlab.com/
 servers:
   # Added by API Auto Mocking Plugin
   - description: API Auto Mocking
-    url: http://localhost:8090/sms
+    url: http://localhost:8090/v1/sms
 tags:
   - name: user
     description: Operations about user
     externalDocs:
       description: Find out more about our store
-      url: http://localhost:8090/sms
+      url: http://localhost:8090/v1/sms
   - name: template
     description: Operations about message template
     externalDocs:
       description: save message template
-      url: http://localhost:8090/sms
+      url: http://localhost:8090/v1/sms
   - name: message
     description: Operations about message
     externalDocs:
       description: sending/reporting message
-      url: http://localhost:8090/sms
+      url: http://localhost:8090/v1/sms
   - name: messageReport
     description: Operations about message report
     externalDocs:
       description: save/update message report
-      url: http://localhost:8090/sms
+      url: http://localhost:8090/v1/sms
+  - name: ElasticSearch
+    description: Operations about elastic search
+    externalDocs:
+      description: create/search elastic search document
+      url: http://localhost:8090/v1/es
 paths:
-  /user:
+  /es/product/save:
+    post:
+      tags:
+        - ElasticSearch
+      summary: Save Product Document
+      description: Save ES Product Document
+      operationId: saveProduct
+      requestBody:
+        description: Created ES Product Document
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+  /es/product/search:
+    post:
+      tags:
+        - ElasticSearch
+      summary: search Product Document
+      description: search ES Product Document
+      operationId: searchProduct
+      requestBody:
+        description: search ES Product Document
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      x-codegen-request-body-name: body
+  /sms/user:
     post:
       tags:
         - user
@@ -53,7 +99,7 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /user/{username}:
+  /sms/user/{username}:
     get:
       tags:
         - user
@@ -133,7 +179,7 @@ paths:
         404:
           description: User not found
           content: {}
-  /template:
+  /sms/template:
     post:
       tags:
         - template
@@ -161,7 +207,7 @@ paths:
           description: unauthorized request
           content: {}
       x-codegen-request-body-name: body
-  /send:
+  /sms/send:
     post:
       tags:
         - message
@@ -196,7 +242,7 @@ paths:
           description: unauthorized request
           content: {}
       x-codegen-request-body-name: body
-  /batch:
+  /sms/batch:
     post:
       tags:
         - message
@@ -231,7 +277,7 @@ paths:
           description: unauthorized request
           content: {}
       x-codegen-request-body-name: body
-  /sxt/sendReport:
+  /sms/sxt/sendReport:
     post:
       tags:
         - messageReport
@@ -259,7 +305,7 @@ paths:
           description: unauthorized request
           content: {}
       x-codegen-request-body-name: body
-  /sxt/reply:
+  /sms/sxt/reply:
     post:
       tags:
         - messageReport
@@ -314,6 +360,25 @@ components:
           format: int32
           maximum: 10
           minimum: 2
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          minimum: 0.0
+        quantity:
+          type: integer
+          minimum: 0
+        category:
+          type: string
+        description:
+          type: string
+        manufacturer:
+          type: string
     MessageBase:
       type: object
       properties:
@@ -450,7 +515,8 @@ components:
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/MessageData'
+              allOf:
+                - $ref: '#/components/schemas/MessageData'
               nullable: false
     BatchMessage:
       allOf:
