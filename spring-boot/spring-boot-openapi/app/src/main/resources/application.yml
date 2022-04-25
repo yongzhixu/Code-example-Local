@@ -8,4 +8,4 @@ spring:
   application:
     name: demoapi
   profiles:
-    include: message, dmhub, dao, db, mybatis
+    include: message, dmhub, dao, db, mybatis, es

@@ -1,6 +1,6 @@
 package com.convertlab.elasticsearch.services;
 
-import com.convertlab.elasticsearch.model.Product;
+import com.convertlab.elasticsearch.model.ProductDocument;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -23,7 +23,7 @@ public class ProductSearchService {
     private ElasticsearchOperations elasticsearchOperations;
 
     public List<IndexedObjectInformation> createProductIndexBulk
-            (final List<Product> products) {
+            (final List<ProductDocument> products) {
 
         List<IndexQuery> queries = products.stream()
                 .map(product->
@@ -36,7 +36,7 @@ public class ProductSearchService {
                 .bulkIndex(queries, IndexCoordinates.of(PRODUCT_INDEX));
     }
 
-    public String createProductIndex(Product product) {
+    public String createProductIndex(ProductDocument product) {
 
         IndexQuery indexQuery = new IndexQueryBuilder()
                 .withId(product.getId().toString())
@@ -49,6 +49,10 @@ public class ProductSearchService {
     }
 
 
+    public String saveProduct(ProductDocument productDocument){
+        elasticsearchOperations.save(productDocument);
+        return "ok";
+    }
     /**
      * @description
      * -- NativeQuery
@@ -67,10 +71,10 @@ public class ProductSearchService {
                 .withQuery(queryBuilder)
                 .build();
 
-        SearchHits<Product> productHits =
+        SearchHits<ProductDocument> productHits =
                 elasticsearchOperations
                         .search(searchQuery,
-                                Product.class,
+                                ProductDocument.class,
                                 IndexCoordinates.of(PRODUCT_INDEX));
     }
 
@@ -83,9 +87,9 @@ public class ProductSearchService {
         Query searchQuery = new StringQuery(
                 "{\"match\":{\"name\":{\"query\":\""+ productName + "\"}}}\"");
 
-        SearchHits<Product> products = elasticsearchOperations.search(
+        SearchHits<ProductDocument> products = elasticsearchOperations.search(
                 searchQuery,
-                Product.class,
+                ProductDocument.class,
                 IndexCoordinates.of(PRODUCT_INDEX));
 //  ...
     }
@@ -104,9 +108,9 @@ public class ProductSearchService {
 
         Query searchQuery = new CriteriaQuery(criteria);
 
-        SearchHits<Product> products = elasticsearchOperations
+        SearchHits<ProductDocument> products = elasticsearchOperations
                 .search(searchQuery,
-                        Product.class,
+                        ProductDocument.class,
                         IndexCoordinates.of(PRODUCT_INDEX));
     }
 }

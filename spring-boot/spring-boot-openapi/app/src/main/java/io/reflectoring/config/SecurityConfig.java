@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // permit /actuator/**以解决spring boot admin监控不到的问题
                 .antMatchers("/v2/**").permitAll()
-                .antMatchers("/sms/**").permitAll()
+                .antMatchers("/v1/**").permitAll()
                 .antMatchers("/error").permitAll()
                 .anyRequest()
                 .authenticated().and().httpBasic();

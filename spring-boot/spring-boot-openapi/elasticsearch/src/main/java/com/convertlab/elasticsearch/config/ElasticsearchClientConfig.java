@@ -31,7 +31,7 @@ public class ElasticsearchClientConfig extends
         final ClientConfiguration clientConfiguration =
                 ClientConfiguration
                         .builder()
-                        .connectedTo(String.format("{}:{}",EsHost,EsPort))
+                        .connectedTo(String.format("%s:%s",EsHost,EsPort))
                         .build();
 
         return RestClients.create(clientConfiguration).rest();

@@ -1,20 +1,18 @@
 package com.convertlab.elasticsearch.repositories;
 
-import com.convertlab.elasticsearch.model.Product;
+import com.convertlab.elasticsearch.model.ProductDocument;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;
 
-public interface ProductRepository  extends ElasticsearchRepository<Product, String> {
-    List<Product> findByName(String name);
+public interface ProductRepository  extends ElasticsearchRepository<ProductDocument, String> {
+    List<ProductDocument> findByName(String name);
 
-    List<Product> findByNameContaining(String name);
+    List<ProductDocument> findByNameContaining(String name);
 
-    List<Product> findByManufacturerAndCategory
+    List<ProductDocument> findByManufacturerAndCategory
             (String manufacturer, String category);
 
-    List<Product> findByDocTitleEndsWith(String name);
-    List<Product> findByDocTitleStartsWith(String name);
-    List<Product> findByDocTypeEndsWith(String name);
-    List<Product> findByDocTypeStartsWith(String name);
+    List<ProductDocument> findByNameEndsWith(String name);
+    List<ProductDocument> findByNameStartsWith(String name);
 }

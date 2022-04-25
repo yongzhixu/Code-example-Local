@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
-@WebFilter(filterName = "traceIdFilter", urlPatterns = "/v2")
+@WebFilter(filterName = "traceIdFilter", urlPatterns = "/v1")
 @Order(0)
 @Component
 public class TraceIdFilter implements Filter {

@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  title: Convertlab Message Service
+  title: Convertlab Common Service
   description: "For customer to send message to its clients using asigned message service supplier"
   contact:
     email: young.xu@convertlab.com
@@ -11,7 +11,7 @@ externalDocs:
 servers:
   # Added by API Auto Mocking Plugin
   - description: API Auto Mocking
-    url: http://localhost:8090/v1/sms
+    url: http://localhost:8090/v1
 tags:
   - name: user
     description: Operations about user
@@ -54,8 +54,14 @@ paths:
               $ref: '#/components/schemas/Product'
         required: true
       responses:
-        default:
+        200:
           description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        404:
+          description: User not found
           content: {}
       x-codegen-request-body-name: body
   /es/product/search:
@@ -70,7 +76,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/Product'
+              type: string
         required: true
       responses:
         200:
@@ -79,6 +85,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+      x-codegen-request-body-name: body
+  /es/product/all:
+    get:
+      tags:
+        - ElasticSearch
+      summary: search Product Document
+      description: search ES Product Document
+      operationId: getAllProduct
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
       x-codegen-request-body-name: body
   /sms/user:
     post:
@@ -369,6 +392,7 @@ components:
           type: string
         price:
           type: number
+          format: double
           minimum: 0.0
         quantity:
           type: integer
@@ -379,6 +403,10 @@ components:
           type: string
         manufacturer:
           type: string
+      required:
+        - id
+        - name
+        - price
     MessageBase:
       type: object
       properties:

@@ -1,7 +1,7 @@
 package io.reflectoring.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.reflectoring.api.BatchApiController;
+import io.reflectoring.api.SmsApiController;
 import io.reflectoring.model.BatchMessage;
 import io.reflectoring.model.MessageParameters;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class BatchApiControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private BatchApiController batchApiController;
+    private SmsApiController batchApiController;
 
     @Test
     void sendBatchMessage400() throws Exception {

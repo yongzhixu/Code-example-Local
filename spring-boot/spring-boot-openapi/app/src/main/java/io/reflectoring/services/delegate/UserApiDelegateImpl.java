@@ -3,24 +3,28 @@ package io.reflectoring.services.delegate;
 import com.convertlab.common.beta.http.WebClientService;
 import com.convertlab.common.beta.utils.JsonUtil;
 import com.convertlab.kafkapipe.service.KafkaProducer;
+import io.reflectoring.api.SmsApiDelegate;
 import io.reflectoring.entity.UserDb;
+import io.reflectoring.model.BatchMessage;
+import io.reflectoring.model.MessageParameters;
 import io.reflectoring.model.User;
 import io.reflectoring.services.IuserService;
 import lombok.extern.slf4j.Slf4j;
-import io.reflectoring.api.UserApiDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Service
 @Slf4j
-public class UserApiDelegateImpl implements UserApiDelegate {
+public class UserApiDelegateImpl implements SmsApiDelegate {
 
     @Autowired
     IuserService iuserService;
@@ -66,5 +70,19 @@ public class UserApiDelegateImpl implements UserApiDelegate {
         User user = new User();
         user.setEmail("email");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+
+    @Override
+    public Optional<NativeWebRequest> getRequest() {
+        return Optional.empty();
+    }
+
+    @Override
+    public ResponseEntity<String> sendBatchMessage(MessageParameters messageParams, BatchMessage body) {
+        log.error(messageParams.toString());
+        log.error(body.toString());
+
+        return null;
     }
 }
