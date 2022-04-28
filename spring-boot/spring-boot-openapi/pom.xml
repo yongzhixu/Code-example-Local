@@ -29,6 +29,7 @@
         <java.version>1.8</java.version>
         <!--    ==========   built in Modules      =============-->
         <convertlab.common.version>0.0.1-SNAPSHOT</convertlab.common.version>
+        <convertlab.elasticsearch.version>0.0.1-SNAPSHOT</convertlab.elasticsearch.version>
         <convertlab.app.version>0.0.1-SNAPSHOT</convertlab.app.version>
         <convertlab.specification.version>1.0-SNAPSHOT</convertlab.specification.version>
         <convertlab.cache.version>0.0.1-SNAPSHOT</convertlab.cache.version>
