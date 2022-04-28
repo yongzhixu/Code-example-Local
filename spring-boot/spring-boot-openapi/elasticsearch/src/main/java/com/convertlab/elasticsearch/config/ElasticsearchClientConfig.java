@@ -23,6 +23,10 @@ public class ElasticsearchClientConfig extends
     private int EsPort;
     @Value("${elasticsearch.clustername}")
     private String EsClusterName;
+    @Value("${elasticsearch.username}")
+    private String UserName;
+    @Value("${elasticsearch.password}")
+    private String Password;
 
     @Override
     @Bean
@@ -32,6 +36,7 @@ public class ElasticsearchClientConfig extends
                 ClientConfiguration
                         .builder()
                         .connectedTo(String.format("%s:%s",EsHost,EsPort))
+                        .withBasicAuth(UserName,Password)
                         .build();
 
         return RestClients.create(clientConfiguration).rest();
